@@ -1,0 +1,27 @@
+from gpio import *
+from time import *
+
+def main():
+    pinMode(0, IN)  # Konfigurasi sensor gerak sebagai input
+    pinMode(1, OUT)  # Konfigurasi gerbang garasi sebagai output
+    pinMode(2, OUT)  # Konfigurasi lampu sebagai output
+
+    print("System ready")
+
+    while True:
+        motion_detected = digitalRead(0)  # Membaca nilai dari sensor gerak
+        if motion_detected == HIGH:  # Jika sensor gerak mendeteksi gerakan
+            customWrite(1, HIGH)  # Aktifkan gerbang garasi
+            customWrite(2,2)  # Nyalakan lampu
+            print("Motion detected - Gate and light ON")
+            sleep(5)  # Tunggu 5 detik sebelum mematikan gerbang dan lampu
+            customWrite(1, LOW)  # Matikan gerbang garasi
+            customWrite(2,0)  # Matikan lampu
+            print("Gate and light OFF")
+            sleep(1)  # Tunggu 1 detik sebelum memeriksa sensor gerak lagi
+        else:
+            customWrite(1, LOW)  # Matikan gerbang jika tidak ada gerakan
+            customWrite(2,0)  # Matikan lampu jika tidak ada gerakan
+
+if __name__ == "__main__":
+    main()
